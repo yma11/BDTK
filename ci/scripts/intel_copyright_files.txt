@@ -29,4 +29,5 @@ cider/type/plan/*Expr.cpp
 cider/function/FunctionLookupEngine.*
 cider/function/SubstraitFunctionCiderMappings.h
 cider/function/substrait/*
+cider/function/datetime/Cider*
 Makefile
