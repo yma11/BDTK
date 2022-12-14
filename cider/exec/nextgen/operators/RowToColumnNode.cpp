@@ -151,6 +151,19 @@ class ColumnWriter {
               .ret_type = JITTypeTag::VOID,
               .params_vector = {
                   {null_buffer.get(), index_.get(), values.getNull().get()}}});
+    } else {
+      null_buffer.replace(context_.getJITFunction()->createLocalJITValue(
+          [this]() { return allocateBitwiseBuffer(0); }));
+
+      context_.getJITFunction()->emitRuntimeFunctionCall(
+          "set_null_vector_bit",
+          JITFunctionEmitDescriptor{
+              .ret_type = JITTypeTag::VOID,
+              .params_vector = {{null_buffer.get(),
+                                 index_.get(),
+                                 context_.getJITFunction()
+                                     ->createConstant(JITTypeTag::BOOL, false)
+                                     .get()}}});
     }
 
     // Register Output ArrowArray to CodegenContext

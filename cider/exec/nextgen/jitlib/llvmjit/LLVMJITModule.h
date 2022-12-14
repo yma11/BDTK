@@ -43,7 +43,7 @@ enum class OptimizeLevel {
 struct CompilationOptions {
   OptimizeLevel optimize_level = OptimizeLevel::DEBUG;
   llvm::CodeGenOpt::Level codegen_level = llvm::CodeGenOpt::None;
-  bool dump_ir = false;
+  bool dump_ir = true;
 };
 
 class LLVMJITModule final : public JITModule {
