@@ -21,6 +21,7 @@
 #include "exec/plan/builder/SubstraitExprBuilder.h"
 #include "exec/plan/parser/LiteralUtils.h"
 #include "exec/plan/parser/TypeUtils.h"
+#include "exec/plan/validator/CiderPlanValidator.h"
 #include "substrait/algebra.pb.h"
 #include "substrait/function.pb.h"
 #include "substrait/type.pb.h"
@@ -37,8 +38,7 @@ int main(int argc, char** argv) {
   ::substrait::Expression* add_expr = builder.makeScalarExpr(
       "add", {multiply_expr, field1}, CREATE_SUBSTRAIT_TYPE_FULL_PTR(I64, false));
 
-  // TODO: (yma11) build extended expression and replace old evalulator API
-  // ::substrait::ExtendedExpression* ext_expr = builder.build({{add_expr, {"add_res"}}});
+  ::substrait::ExtendedExpression* ext_expr = builder.build({{add_expr, "add_res"}});
   // Make batch for evaluation, data should be transferred from frontend in real case
   // TODO : (yma11) switch to new expr evaluation API
   //   auto input_batch = CiderBatchBuilder()
@@ -100,6 +100,8 @@ int main(int argc, char** argv) {
       agg_builder.makeAggExpr("sum", {arg_1}, CREATE_SUBSTRAIT_TYPE_FULL_PTR(I64, false));
   ::substrait::AggregateFunction* min =
       agg_builder.makeAggExpr("min", {arg_2}, CREATE_SUBSTRAIT_TYPE_FULL_PTR(I64, false));
-  // ::substrait::ExtendedExpression* ext_expr = builder.build({{sum, {"sum_a"}}, {min,
-  // {"min_b"}}});
+  ::substrait::ExtendedExpression* ext_expr_2 =
+      agg_builder.build({{sum, "sum_a"}, {min, "min_b"}});
+  CHECK(
+      validator::CiderPlanValidator::validate(*ext_expr_2, PlatformType::PrestoPlatform));
 }
