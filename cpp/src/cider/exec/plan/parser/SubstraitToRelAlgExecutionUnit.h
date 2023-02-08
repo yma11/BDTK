@@ -36,6 +36,7 @@
 #include "exec/template/RelAlgExecutionUnit.h"
 #include "include/cider/CiderSupportPlatType.h"
 #include "substrait/algebra.pb.h"
+#include "substrait/extended_expression.pb.h"
 #include "substrait/plan.pb.h"
 
 namespace generator {
@@ -63,6 +64,9 @@ class SubstraitToRelAlgExecutionUnit {
       , input_table_schemas_{}
       , plan_(substrait::Plan())
       , output_cider_table_schema_(nullptr) {}
+
+  RelAlgExecutionUnit createRelAlgExecutionUnit(
+      const substrait::ExtendedExpression* ext_expr);
 
   std::shared_ptr<RelAlgExecutionUnit> createRelAlgExecutionUnit(
       const std::vector<substrait::Expression*> exprs,
