@@ -131,7 +131,7 @@ TEST_F(CiderPatternTest, ProjectExprPattern) {
   createDuckDbTable({data});
   auto veloxPlan = PlanBuilder()
                        .values({data})
-                       .project({"c0 + 8 ", "c1 + c0"})
+                       .project({"c0 + 8", "c1 + c0"})
                        .filter("p1 > 15")
                        .planNode();
 
