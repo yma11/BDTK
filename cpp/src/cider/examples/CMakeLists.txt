@@ -18,8 +18,19 @@
 # under the License.
 
 add_executable(ExpressionEvalExample ExpressionEvalExample.cpp)
-target_link_libraries(ExpressionEvalExample test_utils cider_expr_builder cider
-                      cider_plan_validator substrait)
+target_link_libraries(
+  ExpressionEvalExample
+  dl
+  cider_util
+  test_utils
+  cider_expr_builder
+  substrait
+  cider_plan_validator
+  cider_func_lkup
+  ${SUBSTRAITCPP_FUNCTION_LIB}
+  ${SUBSTRAITCPP_TYPE_LIB}
+  ${SUBSTRAITCPP_COMMON_LIB}
+  yaml-cpp)
 
 add_executable(CiderHashTableExample CiderHashTableExample.cpp)
 target_link_libraries(CiderHashTableExample cider cider_hashtable_join)
